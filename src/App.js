@@ -1,12 +1,9 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import React from 'react';
+import HomeStack from './navigation/stack.home';
 
 const App = () => {
-  return (
-    <View>
-      <Text>App</Text>
-    </View>
-  );
+  return <HomeStack />;
 };
 
 export default App;
