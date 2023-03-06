@@ -18,6 +18,8 @@ module.exports = {
           '@components': './src/components',
           '@screens': './src/screens',
           '@navigation': './src/navigation',
+          '@store': './src/store',
+          '@features': './src/features',
         },
       },
     ],
