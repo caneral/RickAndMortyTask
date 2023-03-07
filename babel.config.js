@@ -20,6 +20,7 @@ module.exports = {
           '@navigation': './src/navigation',
           '@store': './src/store',
           '@features': './src/features',
+          '@api': './src/api',
         },
       },
     ],
