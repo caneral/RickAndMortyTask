@@ -21,6 +21,7 @@ module.exports = {
           '@store': './src/store',
           '@features': './src/features',
           '@api': './src/api',
+          '@constants': './src/constants',
         },
       },
     ],
