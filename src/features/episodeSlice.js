@@ -35,7 +35,7 @@ const episodeSlice = createSlice({
     });
     builder.addCase(getEpisodes.fulfilled, (state, action) => {
       state.episodes.loading = false;
-      state.episodes.data = action.payload;
+      state.episodes.data = action.payload.data;
     });
     builder.addCase(getEpisodes.rejected, (state, action) => {
       state.episodes.loading = false;
