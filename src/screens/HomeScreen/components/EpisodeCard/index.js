@@ -2,10 +2,12 @@ import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {COLORS} from '@constants/theme';
 
-const EpisodeCard = ({data}) => {
+const EpisodeCard = ({data, navigation}) => {
   const {name, air_date, episode} = data;
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity
+      onPress={() => navigation.navigate('Episode')}
+      style={styles.container}>
       <Text style={styles.episode}>{episode}</Text>
       <Text numberOfLines={1} style={styles.name}>
         {name}

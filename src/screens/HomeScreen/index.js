@@ -6,7 +6,7 @@ import EpisodeCard from './components/EpisodeCard/index';
 import {COLORS} from '@constants/theme';
 import Pagination from '@components/Pagination/Pagination';
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
   const [pageNumber, setPageNumber] = useState(1);
 
   const {episodes} = useSelector(state => state.episode);
@@ -19,7 +19,9 @@ const HomeScreen = () => {
   }, [dispatch, pageNumber]);
 
   const keyExtractor = item => item.id.toString();
-  const renderItem = ({item}) => <EpisodeCard data={item} />;
+  const renderItem = ({item}) => (
+    <EpisodeCard data={item} navigation={navigation} />
+  );
 
   return (
     <SafeAreaView style={styles.safeArea}>
