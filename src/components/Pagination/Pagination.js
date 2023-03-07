@@ -21,7 +21,7 @@ const Pagination = ({info, pageNumber, setPageNumber}) => {
   };
 
   const pageNumbers = [];
-  for (let i = 1; i <= info.pages; i++) {
+  for (let i = 1; i <= info?.pages; i++) {
     pageNumbers.push(i);
   }
 

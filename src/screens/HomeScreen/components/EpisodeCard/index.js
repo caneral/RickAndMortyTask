@@ -3,10 +3,10 @@ import React from 'react';
 import {COLORS} from '@constants/theme';
 
 const EpisodeCard = ({data, navigation}) => {
-  const {name, air_date, episode} = data;
+  const {id, name, air_date, episode} = data;
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('Episode')}
+      onPress={() => navigation.navigate('Episode', {id})}
       style={styles.container}>
       <Text style={styles.episode}>{episode}</Text>
       <Text numberOfLines={1} style={styles.name}>

@@ -41,6 +41,18 @@ const episodeSlice = createSlice({
       state.episodes.loading = false;
       state.episodes.error = action.error;
     });
+    builder.addCase(getEpisode.pending, (state, action) => {
+      state.episode.loading = true;
+      state.episode.error = null;
+    });
+    builder.addCase(getEpisode.fulfilled, (state, action) => {
+      state.episode.loading = false;
+      state.episode.data = action.payload.data;
+    });
+    builder.addCase(getEpisode.rejected, (state, action) => {
+      state.episode.loading = false;
+      state.episode.error = action.error;
+    });
   },
 });
 
