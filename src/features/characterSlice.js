@@ -7,6 +7,9 @@ const initialState = {
     loading: false,
     error: null,
   },
+  favorites: {
+    data: null,
+  },
 };
 
 export const getCharacters = createAsyncThunk('characters/get', async page => {
@@ -17,7 +20,11 @@ export const getCharacters = createAsyncThunk('characters/get', async page => {
 const characterSlice = createSlice({
   name: 'character',
   initialState,
-  reducers: {},
+  reducers: {
+    setToFavorite: (state, action) => {
+      state.favorites.data = action.payload;
+    },
+  },
   extraReducers: builder => {
     builder.addCase(getCharacters.pending, (state, action) => {
       state.characters.loading = true;
@@ -33,5 +40,7 @@ const characterSlice = createSlice({
     });
   },
 });
+
+export const {setToFavorite} = characterSlice.actions;
 
 export default characterSlice.reducer;

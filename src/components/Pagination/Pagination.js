@@ -8,7 +8,7 @@ import {
 import React from 'react';
 import {COLORS} from '@constants/theme';
 
-const Pagination = ({info, pageNumber, setPageNumber}) => {
+const Pagination = ({pageCount, pageNumber, setPageNumber}) => {
   const next = () => {
     setPageNumber(num => num + 1);
   };
@@ -21,7 +21,7 @@ const Pagination = ({info, pageNumber, setPageNumber}) => {
   };
 
   const pageNumbers = [];
-  for (let i = 1; i <= info?.pages; i++) {
+  for (let i = 1; i <= Math.ceil(pageCount); i++) {
     pageNumbers.push(i);
   }
 

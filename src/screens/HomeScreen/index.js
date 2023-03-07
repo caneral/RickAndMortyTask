@@ -35,7 +35,7 @@ const HomeScreen = ({navigation}) => {
         <Pagination
           setPageNumber={setPageNumber}
           pageNumber={pageNumber}
-          info={info}
+          pageCount={info?.pages}
         />
       </View>
     </SafeAreaView>
