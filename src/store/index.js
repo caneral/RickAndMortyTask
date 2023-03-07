@@ -1,9 +1,11 @@
-import {configureStore} from '@reduxjs/toolkit';
-import {useDispatch, useSelector} from 'react-redux';
+import episodeReducer from '@features/episodeSlice';
+import {configureStore, getDefaultMiddleware} from '@reduxjs/toolkit';
 
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    episode: episodeReducer,
+  },
+  middleware: getDefaultMiddleware({
+    serializableCheck: false,
+  }),
 });
-
-export const useAppDispatch = () => useDispatch();
-export const useAppSelector = () => useSelector();
