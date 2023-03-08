@@ -10,7 +10,9 @@ import {COLORS} from '@constants/theme';
 
 const Pagination = ({pageCount, pageNumber, setPageNumber}) => {
   const next = () => {
-    setPageNumber(num => num + 1);
+    if (pageNumber !== Math.ceil(pageCount)) {
+      setPageNumber(num => num + 1);
+    }
   };
 
   const prev = () => {

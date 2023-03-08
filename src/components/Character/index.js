@@ -12,7 +12,7 @@ import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import {useDispatch, useSelector} from 'react-redux';
 import {setToFavorite} from '@features/characterSlice';
 
-const Character = ({data}) => {
+const Character = ({data, navigation}) => {
   const dispatch = useDispatch();
   const {favorites} = useSelector(state => state.character);
   const {id, name, status, location, image} = data;
@@ -46,7 +46,9 @@ const Character = ({data}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity
+      onPress={() => navigation.navigate('Character', {data})}
+      style={styles.container}>
       <Image
         source={{uri: image}}
         style={styles.characterImage}
@@ -72,7 +74,7 @@ const Character = ({data}) => {
         <Text style={styles.location}>Location</Text>
         <Text style={styles.locationName}>{location.name}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
