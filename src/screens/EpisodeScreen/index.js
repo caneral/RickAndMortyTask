@@ -111,7 +111,7 @@ const EpisodeScreen = ({navigation, route}) => {
         <Pagination
           setPageNumber={setPageNumber}
           pageNumber={pageNumber}
-          pageCount={charactersData?.length / postPerPage}
+          pageCount={currentData?.length / postPerPage}
         />
       </View>
     </SafeAreaView>

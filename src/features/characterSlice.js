@@ -45,7 +45,17 @@ const characterSlice = createSlice({
               });
             });
           } else {
+            const createChannels = () => {
+              PushNotification.createChannel({
+                channelId: 'rick-channel',
+                channelName: 'Rick Channel',
+              });
+            };
+
+            createChannels();
+
             PushNotification.localNotification({
+              channelId: 'rick-channel',
               title: notificationTitle,
               message: notificationMessage,
             });
