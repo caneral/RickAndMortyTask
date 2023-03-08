@@ -1,4 +1,11 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Alert,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React from 'react';
 import {COLORS} from '@constants/theme';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
@@ -13,7 +20,29 @@ const Character = ({data}) => {
   const isFavorite = favorites.data?.some(c => c.id === id);
 
   const setFavorite = () => {
-    dispatch(setToFavorite(data));
+    if (isFavorite) {
+      Alert.alert(
+        'Karakteri Sil',
+        `${name} isimli karakteri favorilerden kaldırmak istediğinize emin misiniz?`,
+        [
+          {
+            text: 'Yes',
+            onPress: () => {
+              dispatch(setToFavorite(data));
+            },
+          },
+          {
+            text: 'No',
+            onPress: () => {
+              console.log('Karakter silme islemi iptal edildi!');
+            },
+            style: 'cancel',
+          },
+        ],
+      );
+    } else {
+      dispatch(setToFavorite(data));
+    }
   };
 
   return (

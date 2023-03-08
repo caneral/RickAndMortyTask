@@ -1,55 +1,31 @@
 import {FlatList, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {getEpisode} from '@features/episodeSlice';
-import {getCharacters} from '@features/characterSlice';
-import Character from '../../components/Character/index';
+import {useSelector} from 'react-redux';
+
 import {COLORS} from '@constants/theme';
 import Pagination from '@components/Pagination/Pagination';
+import Character from '@components/Character/index';
 
-const EpisodeScreen = ({navigation, route}) => {
-  const {params} = route;
-  const {id} = params;
-
+const FavoriteScreen = ({navigation}) => {
   const [pageNumber, setPageNumber] = useState(1);
   const postPerPage = 5;
 
-  const {episode} = useSelector(state => state.episode);
-  const {data} = Object(episode);
-
-  const {characters} = useSelector(state => state.character);
-  const {data: charactersData} = Object(characters);
+  const {favorites} = useSelector(state => state.character);
+  const {data} = Object(favorites);
 
   const indexOfLastCharacter = pageNumber * postPerPage;
   const indexOfFirstCharacter = indexOfLastCharacter - postPerPage;
 
-  const currentCharacters = charactersData?.slice(
+  const currentCharacters = data?.slice(
     indexOfFirstCharacter,
     indexOfLastCharacter,
   );
 
   useEffect(() => {
     navigation.setOptions({
-      title: data?.name,
+      title: 'Favori Karakterlerim',
     });
-  }, [data, navigation]);
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getEpisode(id));
-  }, [dispatch, id]);
-
-  useEffect(() => {
-    if (data !== null) {
-      const charactersId = data.characters
-        .map(character =>
-          character.replace('https://rickandmortyapi.com/api/character/', ''),
-        )
-        .toString();
-      dispatch(getCharacters(charactersId));
-    }
-  }, [dispatch, data]);
+  }, [navigation]);
 
   const keyExtractor = item => item.id.toString();
   const renderItem = ({item}) => (
@@ -71,14 +47,14 @@ const EpisodeScreen = ({navigation, route}) => {
         <Pagination
           setPageNumber={setPageNumber}
           pageNumber={pageNumber}
-          pageCount={charactersData?.length / postPerPage}
+          pageCount={data?.length / postPerPage}
         />
       </View>
     </SafeAreaView>
   );
 };
 
-export default EpisodeScreen;
+export default FavoriteScreen;
 
 const styles = StyleSheet.create({
   safeArea: {

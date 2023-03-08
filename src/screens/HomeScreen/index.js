@@ -1,4 +1,11 @@
-import {FlatList, SafeAreaView, StyleSheet, View} from 'react-native';
+import {
+  FlatList,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {getEpisodes} from '@features/episodeSlice';
 import {useSelector, useDispatch} from 'react-redux';
@@ -26,6 +33,14 @@ const HomeScreen = ({navigation}) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
+        <View>
+          <Text style={styles.headerText}>Hoşgeldiniz</Text>
+        </View>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Favorite')}
+          style={styles.favoriteButton}>
+          <Text style={styles.favoriteText}>Favorilerim</Text>
+        </TouchableOpacity>
         <FlatList
           data={results}
           renderItem={renderItem}
@@ -56,5 +71,22 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     position: 'relative',
+  },
+  headerText: {
+    fontSize: 28,
+    fontWeight: '600',
+  },
+  favoriteButton: {
+    backgroundColor: COLORS.red600,
+    width: '30%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    display: 'flex',
+    padding: 4,
+    borderRadius: 16,
+    marginVertical: 12,
+  },
+  favoriteText: {
+    color: COLORS.white,
   },
 });

@@ -12,11 +12,6 @@ const initialState = {
   },
   favorites: {
     data: [],
-    warning: {
-      active: false,
-      message:
-        'Favori karakter ekleme sayısını aştınız. Başka bir karakteri favorilerden çıkarmalısınız.',
-    },
   },
 };
 
@@ -31,6 +26,10 @@ const characterSlice = createSlice({
   reducers: {
     setToFavorite: (state, action) => {
       const data = state.favorites.data;
+      const notificationTitle = 'Rick And Morty';
+      const notificationMessage =
+        'Favori karakter ekleme sayısını aştınız. Başka bir karakteri favorilerden çıkarmalısınız.';
+
       if (data.some(c => c.id === action.payload.id)) {
         const filteredData = data.filter(c => c.id !== action.payload.id);
         state.favorites.data = filteredData;
@@ -40,16 +39,14 @@ const characterSlice = createSlice({
           if (Platform.OS === 'ios') {
             PushNotificationIOS.requestPermissions().then(() => {
               PushNotificationIOS.presentLocalNotification({
-                alertTitle: 'Rick And Morty',
-                alertBody:
-                  'Favori karakter ekleme sayısını aştınız. Başka bir karakteri favorilerden çıkarmalısınız.',
+                alertTitle: notificationTitle,
+                alertBody: notificationMessage,
               });
             });
           } else {
             PushNotification.localNotification({
-              title: 'Rick And Morty',
-              message:
-                'Favori karakter ekleme sayısını aştınız. Başka bir karakteri favorilerden çıkarmalısınız.',
+              title: notificationTitle,
+              message: notificationMessage,
             });
           }
         } else {
