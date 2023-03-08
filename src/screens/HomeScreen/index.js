@@ -53,7 +53,7 @@ const HomeScreen = ({navigation}) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        <View>
+        <View style={styles.welcome}>
           <Text style={styles.headerText}>Hoşgeldiniz</Text>
         </View>
         <TouchableOpacity
@@ -99,12 +99,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.white,
   },
+  welcome: {
+    marginHorizontal: 16,
+  },
   list: {
     marginBottom: 32,
+    marginHorizontal: 16,
   },
   container: {
     flex: 1,
-    padding: 16,
+    paddingVertical: 16,
     position: 'relative',
   },
   headerText: {
@@ -112,6 +116,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   favoriteButton: {
+    marginHorizontal: 16,
     backgroundColor: COLORS.red600,
     width: '30%',
     justifyContent: 'center',

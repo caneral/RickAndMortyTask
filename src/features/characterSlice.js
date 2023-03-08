@@ -7,6 +7,7 @@ import PushNotification from 'react-native-push-notification';
 const initialState = {
   characters: {
     data: null,
+    filteredData: [],
     loading: false,
     error: null,
   },
@@ -54,6 +55,16 @@ const characterSlice = createSlice({
         }
       }
     },
+    filterCharacters: (state, action) => {
+      const data = state.characters.data;
+      if (data) {
+        state.characters.filteredData = data.filter(character =>
+          character[action.payload.key]
+            .toLowerCase()
+            .includes(action.payload.value.toLowerCase()),
+        );
+      }
+    },
   },
   extraReducers: builder => {
     builder.addCase(getCharacters.pending, (state, action) => {
@@ -71,6 +82,6 @@ const characterSlice = createSlice({
   },
 });
 
-export const {setToFavorite} = characterSlice.actions;
+export const {setToFavorite, filterCharacters} = characterSlice.actions;
 
 export default characterSlice.reducer;

@@ -1,4 +1,5 @@
 import {
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -27,7 +28,9 @@ const SearchBar = ({searchFilter, setSearchFilter, placeholder, filters}) => {
           placeholder={placeholder}
         />
       </View>
-      <View style={styles.filterBar}>
+      <ScrollView
+        style={styles.filterBar}
+        contentContainerStyle={styles.scrollBar}>
         {filters?.map(item => (
           <TouchableOpacity
             onPress={() =>
@@ -44,7 +47,7 @@ const SearchBar = ({searchFilter, setSearchFilter, placeholder, filters}) => {
             <Text style={styles.filterItemText}>{item.name}</Text>
           </TouchableOpacity>
         ))}
-      </View>
+      </ScrollView>
     </View>
   );
 };
@@ -58,6 +61,7 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
   wrapper: {
+    marginHorizontal: 16,
     height: searchBarHeight,
     backgroundColor: COLORS.white,
     borderStyle: 'solid',
@@ -93,5 +97,9 @@ const styles = StyleSheet.create({
   },
   activeFilterItem: {
     backgroundColor: COLORS.red600,
+  },
+  scrollBar: {
+    flexDirection: 'row',
+    margin: 8,
   },
 });

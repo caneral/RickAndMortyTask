@@ -2,14 +2,43 @@ import {FlatList, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {getEpisode} from '@features/episodeSlice';
-import {getCharacters} from '@features/characterSlice';
+import {filterCharacters, getCharacters} from '@features/characterSlice';
 import Character from '../../components/Character/index';
 import {COLORS} from '@constants/theme';
 import Pagination from '@components/Pagination/Pagination';
+import SearchBar from '@components/SearchBar/SearchBar';
 
 const EpisodeScreen = ({navigation, route}) => {
   const {params} = route;
   const {id} = params;
+
+  const [searchFilter, setSearchFilter] = useState({
+    key: 'name',
+    value: '',
+  });
+
+  const filters = [
+    {
+      key: 'name',
+      name: 'isim',
+    },
+    {
+      key: 'status',
+      name: 'durum',
+    },
+    {
+      key: 'species',
+      name: 'tür',
+    },
+    {
+      key: 'type',
+      name: 'tip',
+    },
+    {
+      key: 'gender',
+      name: 'cinsiyet',
+    },
+  ];
 
   const [pageNumber, setPageNumber] = useState(1);
   const postPerPage = 5;
@@ -18,12 +47,13 @@ const EpisodeScreen = ({navigation, route}) => {
   const {data} = Object(episode);
 
   const {characters} = useSelector(state => state.character);
-  const {data: charactersData} = Object(characters);
+  const {data: charactersData, filteredData} = Object(characters);
 
   const indexOfLastCharacter = pageNumber * postPerPage;
   const indexOfFirstCharacter = indexOfLastCharacter - postPerPage;
 
-  const currentCharacters = charactersData?.slice(
+  const currentData = filteredData.length > 0 ? filteredData : charactersData;
+  const currentCharacters = currentData?.slice(
     indexOfFirstCharacter,
     indexOfLastCharacter,
   );
@@ -35,6 +65,10 @@ const EpisodeScreen = ({navigation, route}) => {
   }, [data, navigation]);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(filterCharacters(searchFilter));
+  }, [dispatch, searchFilter]);
 
   useEffect(() => {
     dispatch(getEpisode(id));
@@ -62,6 +96,12 @@ const EpisodeScreen = ({navigation, route}) => {
           <Text style={styles.episodeText}>{data?.episode}</Text>
           <Text style={styles.nameText}>{data?.name}</Text>
         </View>
+        <SearchBar
+          searchFilter={searchFilter}
+          setSearchFilter={setSearchFilter}
+          filters={filters}
+          placeholder="Karakter ara, Örn: Rick"
+        />
         <FlatList
           data={currentCharacters}
           renderItem={renderItem}
