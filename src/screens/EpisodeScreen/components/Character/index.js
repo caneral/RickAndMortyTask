@@ -1,43 +1,20 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {COLORS} from '@constants/theme';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import {useDispatch, useSelector} from 'react-redux';
+import {setToFavorite} from '@features/characterSlice';
 
 const Character = ({data}) => {
   const dispatch = useDispatch();
   const {favorites} = useSelector(state => state.character);
-  const {data: favoriteData} = favorites;
+  const {id, name, status, location, image} = data;
 
-  const {id, name, status, species, type, gender, origin, location, image} =
-    data;
+  const isFavorite = favorites.data?.some(c => c.id === id);
 
-  // const setToFavorite = async () => {
-  //   const existingCharacters = await AsyncStorage.getItem(
-  //     'FAVORITE_CHARACTERS',
-  //   );
-
-  //   let newCharacter = JSON.parse(existingCharacters);
-  //   if (!newCharacter) {
-  //     newCharacter = [];
-  //   }
-
-  //   newCharacter.push(data);
-
-  //   await AsyncStorage.setItem(
-  //     'FAVORITE_CHARACTERS',
-  //     JSON.stringify(newCharacter),
-  //   )
-  //     .then(() => {
-  //       console.log('It was saved successfully');
-  //     })
-  //     .catch(() => {
-  //       console.log('There was an error saving the character');
-  //     });
-
-  //   dispatch(setToFavorite(newCharacter));
-  // };
+  const setFavorite = () => {
+    dispatch(setToFavorite(data));
+  };
 
   return (
     <View style={styles.container}>
@@ -53,10 +30,13 @@ const Character = ({data}) => {
         ]}>
         <Text style={styles.statusText}>{status}</Text>
       </View>
-      <TouchableOpacity style={[styles.favorite]}>
-        <Text style={styles.statusText}>
-          <AntDesignIcon name="heart" size={32} />
-        </Text>
+      <TouchableOpacity onPress={setFavorite} style={[styles.favorite]}>
+        <AntDesignIcon
+          name="heart"
+          color={isFavorite ? COLORS.red600 : COLORS.white}
+          size={32}
+          style={styles.heart}
+        />
       </TouchableOpacity>
       <View style={styles.header}>
         <Text style={styles.headerText}>{name}</Text>
@@ -128,6 +108,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 12,
     right: 12,
+  },
+  heart: {
     shadowColor: COLORS.black,
     shadowOffset: {
       width: 0,
@@ -135,7 +117,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-
     elevation: 5,
   },
 });

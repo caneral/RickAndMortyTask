@@ -1,5 +1,8 @@
 import rickApi from '@api/index';
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import {Platform} from 'react-native';
+import PushNotification from 'react-native-push-notification';
 
 const initialState = {
   characters: {
@@ -8,7 +11,12 @@ const initialState = {
     error: null,
   },
   favorites: {
-    data: null,
+    data: [],
+    warning: {
+      active: false,
+      message:
+        'Favori karakter ekleme sayısını aştınız. Başka bir karakteri favorilerden çıkarmalısınız.',
+    },
   },
 };
 
@@ -22,7 +30,32 @@ const characterSlice = createSlice({
   initialState,
   reducers: {
     setToFavorite: (state, action) => {
-      state.favorites.data = action.payload;
+      const data = state.favorites.data;
+      if (data.some(c => c.id === action.payload.id)) {
+        const filteredData = data.filter(c => c.id !== action.payload.id);
+        state.favorites.data = filteredData;
+      } else {
+        if (data.length === 10) {
+          // state.favorites.warning = {active: true}
+          if (Platform.OS === 'ios') {
+            PushNotificationIOS.requestPermissions().then(() => {
+              PushNotificationIOS.presentLocalNotification({
+                alertTitle: 'Rick And Morty',
+                alertBody:
+                  'Favori karakter ekleme sayısını aştınız. Başka bir karakteri favorilerden çıkarmalısınız.',
+              });
+            });
+          } else {
+            PushNotification.localNotification({
+              title: 'Rick And Morty',
+              message:
+                'Favori karakter ekleme sayısını aştınız. Başka bir karakteri favorilerden çıkarmalısınız.',
+            });
+          }
+        } else {
+          state.favorites.data.push(action.payload);
+        }
+      }
     },
   },
   extraReducers: builder => {
