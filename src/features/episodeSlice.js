@@ -14,8 +14,9 @@ const initialState = {
   },
 };
 
-export const getEpisodes = createAsyncThunk('episodes/get', async page => {
-  const response = await rickApi.get.getEpisodes(page);
+export const getEpisodes = createAsyncThunk('episodes/get', async data => {
+  const {pageNumber, filter} = data;
+  const response = await rickApi.get.getEpisodes(pageNumber, filter);
   return response;
 });
 
@@ -40,6 +41,7 @@ const episodeSlice = createSlice({
     builder.addCase(getEpisodes.rejected, (state, action) => {
       state.episodes.loading = false;
       state.episodes.error = action.error;
+      state.episodes.data = null;
     });
     builder.addCase(getEpisode.pending, (state, action) => {
       state.episode.loading = true;

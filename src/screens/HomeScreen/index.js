@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   FlatList,
   SafeAreaView,
   StyleSheet,
@@ -12,24 +13,43 @@ import {useSelector, useDispatch} from 'react-redux';
 import EpisodeCard from './components/EpisodeCard/index';
 import {COLORS} from '@constants/theme';
 import Pagination from '@components/Pagination/Pagination';
+import SearchBar from '@components/SearchBar/SearchBar';
 
 const HomeScreen = ({navigation}) => {
+  const dispatch = useDispatch();
   const [pageNumber, setPageNumber] = useState(1);
+  const [searchFilter, setSearchFilter] = useState({
+    key: 'name',
+    value: '',
+  });
 
   const {episodes} = useSelector(state => state.episode);
-  const {data} = Object(episodes);
+  const {data, loading} = Object(episodes);
   const {results, info} = Object(data);
-  const dispatch = useDispatch();
+
+  const filters = [
+    {
+      key: 'name',
+      name: 'isim',
+    },
+    {
+      key: 'episode',
+      name: 'bölüm',
+    },
+  ];
 
   useEffect(() => {
-    dispatch(getEpisodes(pageNumber));
-  }, [dispatch, pageNumber]);
+    const delayDebounceFn = setTimeout(() => {
+      dispatch(getEpisodes({pageNumber, filter: searchFilter}));
+    }, 1000);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [dispatch, pageNumber, searchFilter]);
 
   const keyExtractor = item => item.id.toString();
   const renderItem = ({item}) => (
     <EpisodeCard data={item} navigation={navigation} />
   );
-
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
@@ -41,12 +61,27 @@ const HomeScreen = ({navigation}) => {
           style={styles.favoriteButton}>
           <Text style={styles.favoriteText}>Favorilerim</Text>
         </TouchableOpacity>
-        <FlatList
-          data={results}
-          renderItem={renderItem}
-          keyExtractor={keyExtractor}
-          style={styles.list}
+        <SearchBar
+          searchFilter={searchFilter}
+          setSearchFilter={setSearchFilter}
+          filters={filters}
+          placeholder="Bölüm ara, Örn: Lawnmower"
         />
+        {loading ? (
+          <ActivityIndicator />
+        ) : results ? (
+          <FlatList
+            data={results}
+            renderItem={renderItem}
+            keyExtractor={keyExtractor}
+            style={styles.list}
+          />
+        ) : (
+          <View style={styles.notFound}>
+            <Text>Sonuc bulunamadi</Text>
+          </View>
+        )}
+
         <Pagination
           setPageNumber={setPageNumber}
           pageNumber={pageNumber}
@@ -88,5 +123,10 @@ const styles = StyleSheet.create({
   },
   favoriteText: {
     color: COLORS.white,
+  },
+  notFound: {
+    display: 'flex',
+    alignItems: 'center',
+    marginVertical: 24,
   },
 });
