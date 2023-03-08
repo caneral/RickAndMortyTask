@@ -9,20 +9,13 @@ import React from 'react';
 import {COLORS} from '@constants/theme';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const SearchBar = ({
-  searchFilter,
-  setSearchFilter,
-  searchValue,
-  searchForValue,
-  placeholder,
-  filters,
-}) => {
+const SearchBar = ({searchFilter, setSearchFilter, placeholder, filters}) => {
   return (
     <View style={styles.container}>
       <View style={styles.wrapper}>
         <Ionicons name="search" size={22} color={COLORS.red600} />
         <TextInput
-          value={searchValue}
+          value={searchFilter.value}
           onChangeText={text =>
             setSearchFilter({
               ...searchFilter,
